@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hướng dẫn chẩn đoán hội chứng YHCT</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --card2:#0f1730;
+      --text:#e8ecff;
+      --muted:#b6c0ffb3;
+      --line:#26335f;
+      --accent:#7aa2ff;
+      --accent2:#8bf0c1;
+      --danger:#ff6b8a;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 20% 10%, rgba(122,162,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(139,240,193,.10), transparent 55%),
+                  radial-gradient(900px 600px at 50% 100%, rgba(255,107,138,.08), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      min-height:100vh;
+      padding: 28px 16px 48px;
+    }
+
+    .wrap{max-width:1080px;margin:0 auto;}
+    header{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+    .title{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    h1{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.4;
+      max-width: 72ch;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      background: rgba(18,26,51,.55);
+      border: 1px solid rgba(38,51,95,.65);
+      padding: 8px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+    }
+    .tab-btn{
+      appearance:none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor:pointer;
+      transition: .2s ease;
+      display:flex;align-items:center;gap:8px;
+      user-select:none;
+    }
+    .tab-btn:hover{color:var(--text); background: rgba(122,162,255,.10);}
+    .tab-btn[aria-selected="true"]{
+      background: linear-gradient(135deg, rgba(122,162,255,.22), rgba(139,240,193,.14));
+      color: var(--text);
+      border: 1px solid rgba(122,162,255,.25);
+    }
+
+    .panel{
+      margin-top: 16px;
+      display:none;
+      animation: fadeIn .18s ease-out;
+    }
+    .panel.active{display:block;}
+
+    @keyframes fadeIn{from{opacity:.4; transform: translateY(4px);} to{opacity:1; transform: translateY(0);} }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 920px){
+      header{flex-direction:column; align-items:flex-start}
+      .tabs{width:100%}
+      .grid{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(18,26,51,.85), rgba(15,23,48,.85));
+      border: 1px solid rgba(38,51,95,.75);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card h2{
+      margin: 0 0 10px;
+      font-size: 15px;
+      letter-spacing:.2px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .badge{
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(122,162,255,.14);
+      border: 1px solid rgba(122,162,255,.22);
+    }
+
+    .form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form .full{grid-column: 1 / -1;}
+    label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+    input, select, textarea{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(8,12,26,.65);
+      border: 1px solid rgba(38,51,95,.75);
+      color: var(--text);
+      outline:none;
+      transition:.15s ease;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(122,162,255,.6);
+      box-shadow: 0 0 0 3px rgba(122,162,255,.14);
+    }
+    textarea{min-height: 180px; resize: vertical; line-height: 1.5;}
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 12px;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(38,51,95,.85);
+      background: rgba(122,162,255,.14);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor:pointer;
+      transition:.15s ease;
+      display:inline-flex;align-items:center;gap:10px;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(122,162,255,.55);}
+    .btn.secondary{background: rgba(182,192,255,.08);}
+    .btn.danger{background: rgba(255,107,138,.12); border-color: rgba(255,107,138,.35);}
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+      margin: 6px 0 0;
+    }
+
+    .result-top{
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+      margin-bottom: 12px;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(38,51,95,.75);
+      background: rgba(8,12,26,.55);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .diag{
+      border-left: 3px solid rgba(139,240,193,.75);
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(139,240,193,.06);
+      border: 1px solid rgba(139,240,193,.18);
+      margin-top: 10px;
+    }
+    .diag h3{margin:0 0 6px;font-size: 14px;}
+    .diag p{margin:0;color:var(--text);line-height:1.55;font-size: 13px;}
+    .list{
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display:grid;
+      gap: 10px;
+    }
+    .item{
+      border: 1px solid rgba(38,51,95,.75);
+      background: rgba(8,12,26,.55);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .item .k{
+      font-weight: 800;
+      font-size: 13px;
+      margin:0 0 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .score{
+      font-size: 12px;
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(122,162,255,.16);
+      border: 1px solid rgba(122,162,255,.28);
+      white-space: nowrap;
+    }
+    .item .v{
+      margin:0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .warn{
+      border-left: 3px solid rgba(255,107,138,.75);
+      background: rgba(255,107,138,.06);
+      border: 1px solid rgba(255,107,138,.18);
+      padding: 10px 12px;
+      border-radius: 14px;
+      margin-top: 12px;
+    }
+    .warn b{color: var(--text);}
+    footer{
+      margin-top: 16px;
+      color: rgba(182,192,255,.65);
+      font-size: 12px;
+      line-height:1.45;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <header>
+    <div class="title">
+      <h1>Hướng dẫn chẩn đoán hội chứng bệnh Y học cổ truyền</h1>
+      <p class="subtitle">
+        Tab 1: nhập thông tin + triệu chứng. Tab 2: xem kết quả sau suy luận (demo rule-based, bạn thay bằng ILP/MaxSAT/KG sau).
+      </p>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Tabs">
+      <button class="tab-btn" id="tab-input" role="tab" aria-selected="true" aria-controls="panel-input">
+        📝 Nhập liệu
+      </button>
+      <button class="tab-btn" id="tab-output" role="tab" aria-selected="false" aria-controls="panel-output">
+        🧠 Chẩn đoán
+      </button>
+    </nav>
+  </header>
+
+  <!-- TAB 1 -->
+  <section class="panel active" id="panel-input" role="tabpanel" aria-labelledby="tab-input">
+    <div class="grid">
+      <!-- KHUNG 1 -->
+      <div class="card">
+        <h2>Khung 1: Thông tin người bệnh <span class="badge">Bắt buộc tối thiểu: họ tên + tuổi + giới</span></h2>
+
+        <div class="form">
+          <div class="full">
+            <label for="name">Họ tên</label>
+            <input id="name" type="text" placeholder="Ví dụ: Nguyễn Văn A" />
+          </div>
+
+          <div>
+            <label for="age">Tuổi</label>
+            <input id="age" type="number" min="0" max="130" placeholder="Ví dụ: 45" />
+          </div>
+
+          <div>
+            <label for="sex">Giới</label>
+            <select id="sex">
+              <option value="">-- Chọn --</option>
+              <option value="male">Nam</option>
+              <option value="female">Nữ</option>
+              <option value="other">Khác</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="weight">Cân nặng (kg)</label>
+            <input id="weight" type="number" min="0" step="0.1" placeholder="Ví dụ: 60" />
+          </div>
+
+          <div>
+            <label for="height">Chiều cao (cm)</label>
+            <input id="height" type="number" min="0" step="0.1" placeholder="Ví dụ: 165" />
+          </div>
+
+          <div class="full">
+            <p class="hint">Gợi ý: hệ thống có thể tự tính BMI để hỗ trợ đánh giá thể trạng (tuỳ bạn mở rộng).</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="btn secondary" id="btnFillDemo" type="button">⚡ Điền dữ liệu mẫu</button>
+          <button class="btn danger" id="btnClear" type="button">🧹 Xoá dữ liệu</button>
+        </div>
+      </div>
+
+      <!-- KHUNG 2 -->
+      <div class="card">
+        <h2>Khung 2: Triệu chứng (vấn chẩn) <span class="badge">Nhập dạng gạch đầu dòng / cách nhau bằng dấu phẩy</span></h2>
+
+        <label for="symptoms">Triệu chứng</label>
+        <textarea id="symptoms" placeholder="Ví dụ:
+- sợ lạnh
+- tay chân lạnh
+- mệt mỏi
+- tiểu trong nhiều
+- lưỡi nhạt, rêu trắng..."></textarea>
+
+        <div class="row">
+          <button class="btn" id="btnInfer" type="button">🧠 Suy luận &amp; xem chẩn đoán</button>
+          <span class="pill" id="bmiPill">BMI: <span class="mono" id="bmiValue">—</span></span>
+          <span class="pill">Trạng thái: <span class="mono" id="statusValue">Chưa suy luận</span></span>
+        </div>
+
+        <p class="hint">
+          Demo hiện dùng <span class="mono">rule-based scoring</span> (từ khoá → cộng điểm). Khi bạn có KG/constraint/ILP, chỉ cần thay hàm suy luận.
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <b>Lưu ý:</b> Đây là giao diện + logic demo phục vụ nghiên cứu/huấn luyện. Không thay thế chẩn đoán y khoa.
+    </footer>
+  </section>
+
+  <!-- TAB 2 -->
+  <section class="panel" id="panel-output" role="tabpanel" aria-labelledby="tab-output">
+    <div class="card">
+      <div class="result-top">
+        <div>
+          <h2 style="margin:0;">Kết quả chẩn đoán (sau suy luận)</h2>
+          <p class="hint" style="margin-top:6px;">
+            Hiển thị top hội chứng + giải thích lý do + câu hỏi gợi ý bổ sung triệu chứng (nếu thiếu).
+          </p>
+        </div>
+        <div class="pill">
+          Hồ sơ: <span class="mono" id="profileSummary">—</span>
+        </div>
+      </div>
+
+      <div class="diag" id="bestDiag">
+        <h3>Chưa có kết quả</h3>
+        <p>Hãy nhập dữ liệu ở Tab 1 và bấm “Suy luận”.</p>
+      </div>
+
+      <ul class="list" id="rankList"></ul>
+
+      <div class="warn">
+        <b>Cảnh báo an toàn:</b> Nếu có dấu hiệu cấp cứu (đau ngực, khó thở, yếu liệt, lú lẫn, sốt cao kéo dài...), cần khám/cấp cứu ngay.
+      </div>
+
+      <footer>
+        Gợi ý nâng cấp logic: thay <span class="mono">inferSyndromes()</span> bằng engine ILP/MaxSAT hoặc truy vấn KG (symptom→syndrome) + constraint (incompatibility).
+      </footer>
+    </div>
+  </section>
+</div>
+
+<script>
+  // ---------- Tabs ----------
+  const tabInput = document.getElementById('tab-input');
+  const tabOutput = document.getElementById('tab-output');
+  const panelInput = document.getElementById('panel-input');
+  const panelOutput = document.getElementById('panel-output');
+
+  function setTab(which){
+    const isInput = which === 'input';
+    tabInput.setAttribute('aria-selected', String(isInput));
+    tabOutput.setAttribute('aria-selected', String(!isInput));
+    panelInput.classList.toggle('active', isInput);
+    panelOutput.classList.toggle('active', !isInput);
+  }
+
+  tabInput.addEventListener('click', () => setTab('input'));
+  tabOutput.addEventListener('click', () => setTab('output'));
+
+  // ---------- Form fields ----------
+  const elName = document.getElementById('name');
+  const elAge = document.getElementById('age');
+  const elSex = document.getElementById('sex');
+  const elWeight = document.getElementById('weight');
+  const elHeight = document.getElementById('height');
+  const elSymptoms = document.getElementById('symptoms');
+
+  const bmiValue = document.getElementById('bmiValue');
+  const statusValue = document.getElementById('statusValue');
+
+  const profileSummary = document.getElementById('profileSummary');
+  const bestDiag = document.getElementById('bestDiag');
+  const rankList = document.getElementById('rankList');
+
+  function computeBMI(){
+    const w = parseFloat(elWeight.value);
+    const hCm = parseFloat(elHeight.value);
+    if(!isFinite(w) || !isFinite(hCm) || w<=0 || hCm<=0) return null;
+    const h = hCm / 100;
+    const bmi = w / (h*h);
+    return Math.round(bmi * 10) / 10;
+  }
+
+  function updateBMIPill(){
+    const bmi = computeBMI();
+    bmiValue.textContent = (bmi === null) ? '—' : String(bmi);
+  }
+
+  elWeight.addEventListener('input', updateBMIPill);
+  elHeight.addEventListener('input', updateBMIPill);
+
+  // ---------- Helpers ----------
+  function normalizeSymptomsText(text){
+    return text
+      .toLowerCase()
+      .replace(/[•\-\u2022]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function tokenizeSymptoms(text){
+    const t = normalizeSymptomsText(text);
+    if(!t) return [];
+    // Split by newline or comma or semicolon
+    const raw = t.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean);
+    // Also include whole normalized text for contains-match
+    return { list: raw, full: t };
+  }
+
+  // ---------- Demo knowledge base ----------
+  // Bạn thay phần này bằng dữ liệu thật (KG + constraint + weights).
+  const KNOWLEDGE = [
+    {
+      code: "DƯƠNG HƯ",
+      label: "Thận dương hư / Dương hư (gợi ý)",
+      keywords: [
+        "sợ lạnh","lạnh","tay chân lạnh","mệt mỏi","tiểu trong","tiểu nhiều",
+        "phù","đau lưng","liệt dương","giảm ham muốn","lưỡi nhạt","rêu trắng"
+      ],
+      missingQuestions: [
+        "Bạn có sợ lạnh rõ, thích ấm, ưa chườm ấm không?",
+        "Tiểu trong nhiều/lâu? có phù nhẹ buổi sáng không?",
+        "Lưng gối mỏi lạnh, sinh lực giảm?"
+      ]
+    },
+    {
+      code: "ÂM HƯ",
+      label: "Thận âm hư / Âm hư (gợi ý)",
+      keywords: [
+        "nóng trong","triều nhiệt","ra mồ hôi trộm","khô miệng","khát",
+        "mất ngủ","bứt rứt","ngũ tâm phiền nhiệt","lưỡi đỏ","ít rêu","táo bón"
+      ],
+      missingQuestions: [
+        "Có nóng về chiều/đêm, ra mồ hôi trộm không?",
+        "Khô họng, khát, lưỡi đỏ ít rêu?",
+        "Mất ngủ, bứt rứt, táo bón?"
+      ]
+    },
+    {
+      code: "TỲ KHÍ HƯ",
+      label: "Tỳ khí hư (gợi ý)",
+      keywords: [
+        "ăn kém","đầy bụng","chướng bụng","mệt sau ăn","đại tiện lỏng",
+        "tiêu chảy","sợ mỡ","hơi thở ngắn","mặt vàng","lưỡi nhạt","rêu trắng"
+      ],
+      missingQuestions: [
+        "Ăn kém, đầy bụng, mệt sau ăn?",
+        "Đại tiện lỏng/tiêu chảy kéo dài?",
+        "Lưỡi nhạt rêu trắng, sắc mặt vàng?"
+      ]
+    },
+    {
+      code: "CAN KHÍ UẤT",
+      label: "Can khí uất (gợi ý)",
+      keywords: [
+        "căng tức ngực","sườn đau tức","thở dài","dễ cáu","stress",
+        "uất ức","đầy tức","kinh nguyệt không đều","đau đầu do căng thẳng"
+      ],
+      missingQuestions: [
+        "Có hay thở dài, tức ngực/sườn, nặng khi stress?",
+        "Dễ cáu gắt, uất ức, ngủ kém?",
+        "Nữ: kinh nguyệt thất thường/đau bụng kinh?"
+      ]
+    }
+  ];
+
+  // Simple constraint examples (demo):
+  // - If both "sợ lạnh" and "nóng trong" present, warn about mixed/counter-signs.
+  const CONTRA_SIGNS = [
+    { a: "sợ lạnh", b: "nóng trong", message: "Có đồng thời 'sợ lạnh' và 'nóng trong' → gợi ý thể hỗn hợp/kiêm chứng; cần hỏi thêm dấu hiệu hàn-nhiệt." }
+  ];
+
+  function inferSyndromes(symptomsText){
+    const tok = tokenizeSymptoms(symptomsText);
+    const list = tok.list;
+    const full = tok.full;
+
+    const results = KNOWLEDGE.map(s => {
+      let score = 0;
+      const hits = [];
+      for(const kw of s.keywords){
+        // Match either in full text or by item list contains kw
+        const hit = full.includes(kw) || list.some(x => x.includes(kw));
+        if(hit){
+          score += 1;
+          hits.push(kw);
+        }
+      }
+      // Slight boost if many hits
+      if(score >= 6) score += 1;
+      if(score >= 9) score += 1;
+
+      return { ...s, score, hits };
+    })
+    .sort((x,y) => y.score - x.score);
+
+    // Contra-sign checks (demo)
+    const contra = [];
+    for(const c of CONTRA_SIGNS){
+      if(full.includes(c.a) && full.includes(c.b)) contra.push(c.message);
+    }
+
+    return { results, contra };
+  }
+
+  function formatProfile(){
+    const name = (elName.value || "").trim();
+    const age = (elAge.value || "").trim();
+    const sex = elSex.value;
+    const sexLabel = sex === "male" ? "Nam" : sex === "female" ? "Nữ" : sex === "other" ? "Khác" : "—";
+    const bmi = computeBMI();
+    const bmiText = (bmi === null) ? "BMI —" : `BMI ${bmi}`;
+    const nameText = name ? name : "—";
+    const ageText = age ? `${age}t` : "—";
+    return `${nameText} · ${ageText} · ${sexLabel} · ${bmiText}`;
+  }
+
+  function renderOutput(infer){
+    const { results, contra } = infer;
+
+    profileSummary.textContent = formatProfile();
+
+    // Best diagnosis block
+    const best = results[0];
+    const hasAny = best && best.score > 0;
+
+    if(!hasAny){
+      bestDiag.innerHTML = `
+        <h3>Chưa đủ dữ liệu để suy luận</h3>
+        <p>Hãy nhập triệu chứng cụ thể hơn (ưu tiên: hàn/nhiệt, mồ hôi, đại-tiểu tiện, khát, ngủ, lưỡi...).</p>
+      `;
+    }else{
+      const hitText = best.hits.slice(0, 10).map(x => `<span class="mono">${escapeHtml(x)}</span>`).join(", ");
+      const ask = best.missingQuestions.map(q => `<li>${escapeHtml(q)}</li>`).join("");
+      bestDiag.innerHTML = `
+        <h3>Hội chứng gợi ý: ${escapeHtml(best.label)}</h3>
+        <p><b>Điểm phù hợp:</b> ${best.score} · <b>Triệu chứng khớp:</b> ${hitText || "—"}</p>
+        <p style="margin-top:8px;color:var(--muted);font-size:12px;line-height:1.45;">
+          <b>Câu hỏi bổ sung</b> (để tăng chắc chắn biện chứng):
+        </p>
+        <ul style="margin:8px 0 0; padding-left: 18px; color: var(--text); font-size: 13px; line-height:1.5;">
+          ${ask}
+        </ul>
+        ${contra.length ? `
+          <div class="warn" style="margin-top:12px;">
+            <b>Kiểm tra kiêm chứng/đối chứng:</b>
+            <div style="margin-top:6px;color:var(--muted);font-size:12px;line-height:1.45;">
+              ${contra.map(m => `• ${escapeHtml(m)}`).join("<br/>")}
+            </div>
+          </div>` : ""
+        }
+      `;
+    }
+
+    // Ranking list
+    rankList.innerHTML = "";
+    const topN = results.slice(0, 4);
+    for(const r of topN){
+      const li = document.createElement("li");
+      li.className = "item";
+      li.innerHTML = `
+        <p class="k">
+          <span>${escapeHtml(r.label)}</span>
+          <span class="score">score: ${r.score}</span>
+        </p>
+        <p class="v">
+          Khớp: ${r.hits.length ? r.hits.slice(0, 12).map(x => `<span class="mono">${escapeHtml(x)}</span>`).join(", ") : "—"}
+        </p>
+      `;
+      rankList.appendChild(li);
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // ---------- Buttons ----------
+  const btnInfer = document.getElementById('btnInfer');
+  const btnClear = document.getElementById('btnClear');
+  const btnFillDemo = document.getElementById('btnFillDemo');
+
+  btnInfer.addEventListener('click', () => {
+    const name = (elName.value || "").trim();
+    const age = (elAge.value || "").trim();
+    const sex = elSex.value;
+
+    if(!name || !age || !sex){
+      statusValue.textContent = "Thiếu họ tên/tuổi/giới";
+      alert("Bạn vui lòng nhập tối thiểu: Họ tên + Tuổi + Giới.");
+      return;
+    }
+
+    updateBMIPill();
+
+    const sym = (elSymptoms.value || "").trim();
+    if(!sym){
+      statusValue.textContent = "Thiếu triệu chứng";
+      alert("Bạn vui lòng nhập triệu chứng (Khung 2).");
+      return;
+    }
+
+    const infer = inferSyndromes(sym);
+    renderOutput(infer);
+    statusValue.textContent = "Đã suy luận";
+    setTab('output');
+  });
+
+  btnClear.addEventListener('click', () => {
+    elName.value = "";
+    elAge.value = "";
+    elSex.value = "";
+    elWeight.value = "";
+    elHeight.value = "";
+    elSymptoms.value = "";
+    updateBMIPill();
+    statusValue.textContent = "Chưa suy luận";
+    profileSummary.textContent = "—";
+    bestDiag.innerHTML = `<h3>Chưa có kết quả</h3><p>Hãy nhập dữ liệu ở Tab 1 và bấm “Suy luận”.</p>`;
+    rankList.innerHTML = "";
+    setTab('input');
+  });
+
+  btnFillDemo.addEventListener('click', () => {
+    elName.value = "Nguyễn Văn A";
+    elAge.value = "52";
+    elSex.value = "male";
+    elWeight.value = "68";
+    elHeight.value = "170";
+    elSymptoms.value = `- sợ lạnh
+- tay chân lạnh
+- mệt mỏi
+- tiểu trong nhiều
+- đau lưng mỏi gối
+- lưỡi nhạt, rêu trắng`;
+    updateBMIPill();
+    statusValue.textContent = "Đã điền dữ liệu mẫu";
+  });
+
+  // Init
+  updateBMIPill();
+</script>
+</body>
+</html>
